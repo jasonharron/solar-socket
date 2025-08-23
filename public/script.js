@@ -1823,6 +1823,7 @@ function onSelectStart(event) {
     if (object.name === "Handle") {
       fixHandleRotation(controller);
     }
+
   }
 
 function onSelectEnd(event) {
