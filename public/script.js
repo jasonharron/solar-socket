@@ -331,7 +331,7 @@ function init() {
     0.1,
     1000
   );
-  camera.position.set(0, 2, 1);
+  camera.position.set(0, 2, 1.5);
 
   // Renderer setup
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -341,6 +341,28 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
+
+  // Method 2: Listen for XR session start and set position
+renderer.xr.addEventListener('sessionstart', () => {
+    console.log('XR Session Started');
+    
+    // Get the XR camera (this is managed by WebXR)
+    const xrCamera = renderer.xr.getCamera();
+    
+    const session = renderer.xr.getSession();
+    if (session) {
+        // Request a reference space with an offset transform
+        const offsetTransform = new XRRigidTransform(
+            { x: 0, y: 0, z: -0.5 }, // position offset
+            { x: 0, y: 0, z: 0, w: 1 } // rotation (quaternion)
+        );
+        
+        session.requestReferenceSpace('local-floor').then((refSpace) => {
+            const offsetRefSpace = refSpace.getOffsetReferenceSpace(offsetTransform);
+            renderer.xr.setReferenceSpace(offsetRefSpace);
+        });
+    }
+});
 
   let room = new THREE.LineSegments(
     new BoxLineGeometry(3, 3, 0, 10, 10, 10),
@@ -1368,28 +1390,22 @@ function onMouseMove(event) {
               }
             }
             
-            // If it's a handle, update velocity vectors
-            if (selectedObject.name === "Handle") {
-              // Update velocity based on handle position relative to its planet
-              const planetGroup = selectedObject.parent;
-              if (planetGroup !== undefined && bodies[planetGroup]) {
-                // Calculate velocity from handle position (this depends on how your handles work)
-                // This is an example - adjust based on your actual implementation
-                const handleOffset = new THREE.Vector3();
-                handleOffset.subVectors(selectedObject.position, new THREE.Vector3(0, 0, 0));
-                
-                // Scale the handle offset to get a reasonable velocity
-                const velocityScale = 2.0; // Adjust this value as needed
-                bodies[planetGroup].velocity.x = handleOffset.x * velocityScale;
-                bodies[planetGroup].velocity.y = handleOffset.y * velocityScale;
-                
-                // Update visualizations
-                if (!isPlaying) {
-                  updateVelocityArrows();
-                  updateGravityArrows(bodies, bodyMeshes);
+              if (selectedObject.name === "Handle") {
+                const planetIndex = selectedObject.parent ? selectedObject.parent.index : undefined;
+                if (planetIndex !== undefined && bodies[planetIndex]) {
+                  const handleOffset = new THREE.Vector3();
+                  handleOffset.subVectors(selectedObject.position, new THREE.Vector3(0, 0, 0));
+                  
+                  const velocityScale = 10.0;
+                  bodies[planetIndex].velocity.x = handleOffset.x * velocityScale;
+                  bodies[planetIndex].velocity.y = handleOffset.y * velocityScale;
+                  
+                  if (!isPlaying) {
+                    updateVelocityArrows();
+                    updateGravityArrows(bodies, bodyMeshes);
+                  }
                 }
               }
-            }
           }
         }
       }
@@ -1550,7 +1566,7 @@ function onTouchMove(event) {
                   const handleOffset = new THREE.Vector3();
                   handleOffset.subVectors(selectedObject.position, new THREE.Vector3(0, 0, 0));
                   
-                  const velocityScale = 2.0;
+                  const velocityScale = 10.0;
                   bodies[planetIndex].velocity.x = handleOffset.x * velocityScale;
                   bodies[planetIndex].velocity.y = handleOffset.y * velocityScale;
                   
