@@ -8,9 +8,6 @@ const io = new Server(server);
 
 app.use(express.static(__dirname + "/public"));
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/my-solar-system_all_adapted-from-phet.xhtml");
-});
 
 ////////////////////////
 // Socket Connection //

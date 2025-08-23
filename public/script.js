@@ -1,12 +1,13 @@
 import * as THREE from "three";
-import { XRButton } from "/webxr/XRButton.js";
-import { OrbitControls } from "/OrbitControls.js";
-import { createText } from "/webxr/Text2D.js";
-//import { DragControls } from "/DragControls.js";
-import { XRControllerModelFactory } from "/webxr/XRControllerModelFactory.js";
-import { XRHandModelFactory } from "/webxr/XRHandModelFactory.js";
-import { BoxLineGeometry } from "/BoxLineGeometry.js";
+import { XRButton } from "./webxr/XRButton.js";
+import { OrbitControls } from "./OrbitControls.js";
+import { createText } from "./webxr/Text2D.js";
+//import { DragControls } from "./DragControls.js";
+import { XRControllerModelFactory } from "./webxr/XRControllerModelFactory.js";
+import { XRHandModelFactory } from "./webxr/XRHandModelFactory.js";
+import { BoxLineGeometry } from "./BoxLineGeometry.js";
 //import { LineMaterial } from "/LineMaterial.js";
+const socket = io();
 
 //let scene, camera, renderer, controls;
 const trails = new Map();
@@ -83,8 +84,6 @@ const scaling = {
 };
 
 const spheres = [];
-
-let socket = io();
 
 // Load texture for Clear button
 const loader = new THREE.TextureLoader();
@@ -1373,7 +1372,7 @@ function onMouseMove(event) {
             if (selectedObject.name === "Handle") {
               // Update velocity based on handle position relative to its planet
               const planetGroup = selectedObject.parent;
-              if (planetIndex !== undefined && bodies[planetIndex]) {
+              if (planetGroup !== undefined && bodies[planetGroup]) {
                 // Calculate velocity from handle position (this depends on how your handles work)
                 // This is an example - adjust based on your actual implementation
                 const handleOffset = new THREE.Vector3();
@@ -1381,8 +1380,8 @@ function onMouseMove(event) {
                 
                 // Scale the handle offset to get a reasonable velocity
                 const velocityScale = 2.0; // Adjust this value as needed
-                bodies[planetIndex].velocity.x = handleOffset.x * velocityScale;
-                bodies[planetIndex].velocity.y = handleOffset.y * velocityScale;
+                bodies[planetGroup].velocity.x = handleOffset.x * velocityScale;
+                bodies[planetGroup].velocity.y = handleOffset.y * velocityScale;
                 
                 // Update visualizations
                 if (!isPlaying) {
