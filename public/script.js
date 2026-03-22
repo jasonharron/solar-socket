@@ -88,32 +88,32 @@ const spheres = [];
 // Load texture for Clear button
 const loader = new THREE.TextureLoader();
 const clearTexture = loader.load(
-  "https://cdn.glitch.global/54187771-e873-41e3-8f2f-2a8d19e77031/clear.png?v=1742481737720"
+  "./images/clear.png"
 );
 const playTexture = loader.load(
-  "https://cdn.glitch.global/cc951a80-8777-4ae5-afa3-0ecf0301a995/88cab6290fb34ee2f07130d66b7ce6d4.png?v=1744377022394"
+  "./images/88cab6290fb34ee2f07130d66b7ce6d4.png"
 );
 const forwardTexture = loader.load(
-  "https://cdn.glitch.global/54187771-e873-41e3-8f2f-2a8d19e77031/step-forward.png?v=1742482273423"
+  "./images/step-forward.png"
 );
 const rewindTexture = loader.load(
-  "https://cdn.glitch.global/54187771-e873-41e3-8f2f-2a8d19e77031/rewind-button.png?v=1742482278019"
+  "./images/rewind-button.png"
 );
 
 const massDownTexture = loader.load(
-  "https://cdn.glitch.global/54187771-e873-41e3-8f2f-2a8d19e77031/massdown.png?v=1742484806745"
+  "./images/massdown.png"
 );
 const massUpTexture = loader.load(
-  "https://cdn.glitch.global/54187771-e873-41e3-8f2f-2a8d19e77031/massup.png?v=1742484801066"
+  "./images/massup.png"
 );
 const resetTexture = loader.load(
-  "https://cdn.glitch.global/cc951a80-8777-4ae5-afa3-0ecf0301a995/reset.png?v=1744205536967"
+  "./images/reset.png"
 );
 const velocityTexture = loader.load(
-  "https://cdn.glitch.global/cc951a80-8777-4ae5-afa3-0ecf0301a995/V.png?v=1744216197434"
+  "./images/V.png"
 );
 const pauseTexture = loader.load(
-  "https://cdn.glitch.global/cc951a80-8777-4ae5-afa3-0ecf0301a995/cc939ca06d62a659599474b2cbe4a717.png?v=1744376936932"
+  "./images/cc939ca06d62a659599474b2cbe4a717.png"
 );
 
 init();
